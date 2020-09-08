@@ -8,17 +8,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/funcionario")
-public class Restaurante {
+public class RestauranteController {
 
     private List<Funcionario> listFuncionarios;
 
 
-    public Restaurante() {
+    public RestauranteController() {
         this.listFuncionarios = new ArrayList<>();
        // this.listFuncionarios.add(new Gerente(0.2, "enzo", "067987687", 5, 3.));
     }
     
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public void excluirFuncionario(@PathVariable int id) {
         listFuncionarios.remove(id-1);
         
@@ -36,7 +36,19 @@ public class Restaurante {
             listFuncionarios.add(new Cozinheira(nome, cpf,  qntHorasTrabalhas, valorHora)
                 );
         }
+        
+       
    }
+   
+   @GetMapping
+    public List<Funcionario> exibeTodos() {
+        return listFuncionarios;
+    }
+    
+     @GetMapping("/{id}")
+    public Funcionario getById(@PathVariable int id) {
+        return listFuncionarios.get(id-1);
+    }
 
 //   @PostMapping("/cozinheira")
 //   public void adicionarCozinheira(@RequestBody Cozinheira novaCozinheira){
@@ -54,14 +66,6 @@ public class Restaurante {
 //        listFuncionarios.add(novoCaixa);
 //    } 
 
-    @GetMapping
-    public List<Funcionario> exibeTodos() {
-        return listFuncionarios;
-    }
     
-     @GetMapping("/{id}")
-    public Funcionario getById(@PathVariable int id) {
-        return listFuncionarios.get(id-1);
-    }
 
 }
