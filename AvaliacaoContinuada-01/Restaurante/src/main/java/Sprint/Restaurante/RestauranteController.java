@@ -1,5 +1,7 @@
 package Sprint.Restaurante;
 
+
+//ESSA CLASSE VAI RECEBER OS DADO DA API
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,44 +13,37 @@ import java.util.List;
 public class RestauranteController {
 
     private List<Funcionario> listFuncionarios;
-
-
+    private Restaurante restaurante;
+    
     public RestauranteController() {
         this.listFuncionarios = new ArrayList<>();
+        this.restaurante = new Restaurante();
        // this.listFuncionarios.add(new Gerente(0.2, "enzo", "067987687", 5, 3.));
     }
     
     @DeleteMapping("/{id}")
     public void excluirFuncionario(@PathVariable int id) {
-        listFuncionarios.remove(id-1);
+        this.restaurante.excluiFuncionario(id);
         
     }
-    
+      @GetMapping("/{id}")
+    public Funcionario getById(@PathVariable int id) {
+        return this.restaurante.findById(id);
+    }
+     
     @PostMapping("/{tipo}")
-   public void createFuncionario(@PathVariable String tipo, @RequestParam("nome") String nome , @RequestParam("cpf") String cpf,
-           @RequestParam("qntHorasTrabalhas") Integer qntHorasTrabalhas , @RequestParam("valorHora") Double valorHora
-          ){
-        if (tipo .equalsIgnoreCase("gerente")){
-        listFuncionarios.add(new Gerente(nome, cpf,  qntHorasTrabalhas, valorHora) );
-        } else if(tipo .equalsIgnoreCase("caixa")){
-        listFuncionarios.add(new Caixa(nome, cpf,  qntHorasTrabalhas, valorHora));
-        }else if(tipo .equalsIgnoreCase("cozinheira")){
-            listFuncionarios.add(new Cozinheira(nome, cpf,  qntHorasTrabalhas, valorHora)
-                );
-        }
-        
-       
+   public void createFuncionario(@PathVariable String tipo, @RequestBody FuncionarioDTO dto){
+        this.restaurante.createFuncionario(tipo, dto);
    }
    
    @GetMapping
     public List<Funcionario> exibeTodos() {
-        return listFuncionarios;
+        return this.restaurante.listaFuncionarios();
     }
     
-     @GetMapping("/{id}")
-    public Funcionario getById(@PathVariable int id) {
-        return listFuncionarios.get(id-1);
-    }
+  
+    
+   
 
 //   @PostMapping("/cozinheira")
 //   public void adicionarCozinheira(@RequestBody Cozinheira novaCozinheira){
